@@ -22,6 +22,9 @@ import {
   Award,
   Target,
   Activity,
+  Zap,
+  Lightbulb,
+  Settings,
 } from "lucide-react"
 import {
   LineChart,
@@ -105,6 +108,315 @@ export default function TechShikshaApp() {
   const [chatInput, setChatInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [showCredentials, setShowCredentials] = useState(false)
+
+  const [aiFeatures, setAiFeatures] = useState({
+    studyPlan: null,
+    quizGenerated: false,
+    conceptExplanation: null,
+    learningInsights: null,
+  })
+
+  const [teacherAiFeatures, setTeacherAiFeatures] = useState({
+    studentAnalysis: null,
+    curriculumSuggestions: null,
+    performancePrediction: null,
+    gradingInsights: null,
+  })
+
+  const [adminAiFeatures, setAdminAiFeatures] = useState({
+    systemAnalytics: null,
+    resourceOptimization: null,
+    performanceForecast: null,
+    engagementInsights: null,
+  })
+
+  const generateStudyPlan = async (subject) => {
+    setIsLoading(true)
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: `Create a personalized 7-day study plan for ${subject} for a student. Include daily topics, practice exercises, and time allocation. Format it as a structured plan.`,
+          type: "study_plan",
+        }),
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setAiFeatures((prev) => ({ ...prev, studyPlan: data.response }))
+      }
+    } catch (error) {
+      console.error("Study plan generation error:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const generateQuiz = async (topic) => {
+    setIsLoading(true)
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: `Generate 5 multiple choice questions on ${topic} with 4 options each and correct answers. Format as: Question 1: [question] A) option B) option C) option D) option. Correct Answer: [letter]`,
+          type: "quiz_generation",
+        }),
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setAiFeatures((prev) => ({ ...prev, quizGenerated: data.response }))
+      }
+    } catch (error) {
+      console.error("Quiz generation error:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const explainConcept = async (concept) => {
+    setIsLoading(true)
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: `Explain the concept of "${concept}" in simple terms with examples, analogies, and practical applications. Make it easy to understand for students.`,
+          type: "concept_explanation",
+        }),
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setAiFeatures((prev) => ({ ...prev, conceptExplanation: data.response }))
+      }
+    } catch (error) {
+      console.error("Concept explanation error:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const generateInsights = async () => {
+    setIsLoading(true)
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: `Based on a student's learning progress, provide personalized insights and recommendations for improvement. Include strengths, areas for improvement, and study strategies.`,
+          type: "learning_insights",
+        }),
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setAiFeatures((prev) => ({ ...prev, learningInsights: data.response }))
+      }
+    } catch (error) {
+      console.error("Learning insights error:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const generateStudentAnalysis = async (studentName) => {
+    setIsLoading(true)
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: `Analyze student ${studentName}'s learning patterns, strengths, weaknesses, and provide personalized teaching recommendations. Include learning style assessment and improvement strategies.`,
+          type: "student_analysis",
+        }),
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setTeacherAiFeatures((prev) => ({ ...prev, studentAnalysis: data.response }))
+      }
+    } catch (error) {
+      console.error("Student analysis error:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const generateCurriculumSuggestions = async (subject) => {
+    setIsLoading(true)
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: `Generate innovative curriculum suggestions for ${subject} including modern teaching methods, interactive activities, assessment strategies, and technology integration ideas.`,
+          type: "curriculum_suggestions",
+        }),
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setTeacherAiFeatures((prev) => ({ ...prev, curriculumSuggestions: data.response }))
+      }
+    } catch (error) {
+      console.error("Curriculum suggestions error:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const generatePerformancePrediction = async () => {
+    setIsLoading(true)
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: `Analyze class performance trends and predict future outcomes. Identify at-risk students, suggest intervention strategies, and recommend focus areas for improvement.`,
+          type: "performance_prediction",
+        }),
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setTeacherAiFeatures((prev) => ({ ...prev, performancePrediction: data.response }))
+      }
+    } catch (error) {
+      console.error("Performance prediction error:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const generateGradingInsights = async () => {
+    setIsLoading(true)
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: `Provide AI-powered grading insights including rubric suggestions, common mistake patterns, feedback templates, and assessment optimization recommendations.`,
+          type: "grading_insights",
+        }),
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setTeacherAiFeatures((prev) => ({ ...prev, gradingInsights: data.response }))
+      }
+    } catch (error) {
+      console.error("Grading insights error:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const generateSystemAnalytics = async () => {
+    setIsLoading(true)
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: `Generate comprehensive system analytics report including user engagement patterns, learning effectiveness metrics, system performance insights, and growth recommendations.`,
+          type: "system_analytics",
+        }),
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setAdminAiFeatures((prev) => ({ ...prev, systemAnalytics: data.response }))
+      }
+    } catch (error) {
+      console.error("System analytics error:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const generateResourceOptimization = async () => {
+    setIsLoading(true)
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: `Analyze resource utilization and provide optimization recommendations for better efficiency, cost reduction, and improved learning outcomes. Include infrastructure and content suggestions.`,
+          type: "resource_optimization",
+        }),
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setAdminAiFeatures((prev) => ({ ...prev, resourceOptimization: data.response }))
+      }
+    } catch (error) {
+      console.error("Resource optimization error:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const generatePerformanceForecast = async () => {
+    setIsLoading(true)
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: `Create performance forecasts for the next quarter including enrollment predictions, engagement trends, success rate projections, and strategic recommendations.`,
+          type: "performance_forecast",
+        }),
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setAdminAiFeatures((prev) => ({ ...prev, performanceForecast: data.response }))
+      }
+    } catch (error) {
+      console.error("Performance forecast error:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const generateEngagementInsights = async () => {
+    setIsLoading(true)
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: `Analyze user engagement patterns and provide insights on improving student retention, teacher satisfaction, and overall platform effectiveness.`,
+          type: "engagement_insights",
+        }),
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setAdminAiFeatures((prev) => ({ ...prev, engagementInsights: data.response }))
+      }
+    } catch (error) {
+      console.error("Engagement insights error:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const handleLogin = (e) => {
     e.preventDefault()
@@ -776,6 +1088,142 @@ export default function TechShikshaApp() {
             </TabsContent>
 
             <TabsContent value="chatbot" className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6 mb-6">
+                <Card className="bg-gradient-to-br from-blue-50 to-indigo-100 border-0 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-blue-800">
+                      <BookOpen className="w-5 h-5" />
+                      AI Study Planner
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={() => generateStudyPlan("Mathematics")}
+                          className="bg-blue-600 hover:bg-blue-700 text-xs"
+                          disabled={isLoading}
+                        >
+                          Math Plan
+                        </Button>
+                        <Button
+                          onClick={() => generateStudyPlan("Science")}
+                          className="bg-green-600 hover:bg-green-700 text-xs"
+                          disabled={isLoading}
+                        >
+                          Science Plan
+                        </Button>
+                        <Button
+                          onClick={() => generateStudyPlan("English")}
+                          className="bg-purple-600 hover:bg-purple-700 text-xs"
+                          disabled={isLoading}
+                        >
+                          English Plan
+                        </Button>
+                      </div>
+                      {aiFeatures.studyPlan && (
+                        <div className="bg-white p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
+                          <pre className="whitespace-pre-wrap text-xs">{aiFeatures.studyPlan}</pre>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gradient-to-br from-green-50 to-emerald-100 border-0 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-green-800">
+                      <Zap className="w-5 h-5" />
+                      AI Quiz Generator
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={() => generateQuiz("Algebra")}
+                          className="bg-green-600 hover:bg-green-700 text-xs"
+                          disabled={isLoading}
+                        >
+                          Algebra Quiz
+                        </Button>
+                        <Button
+                          onClick={() => generateQuiz("Physics")}
+                          className="bg-blue-600 hover:bg-blue-700 text-xs"
+                          disabled={isLoading}
+                        >
+                          Physics Quiz
+                        </Button>
+                      </div>
+                      {aiFeatures.quizGenerated && (
+                        <div className="bg-white p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
+                          <pre className="whitespace-pre-wrap text-xs">{aiFeatures.quizGenerated}</pre>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gradient-to-br from-purple-50 to-violet-100 border-0 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-purple-800">
+                      <Lightbulb className="w-5 h-5" />
+                      Concept Explainer
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={() => explainConcept("Photosynthesis")}
+                          className="bg-purple-600 hover:bg-purple-700 text-xs"
+                          disabled={isLoading}
+                        >
+                          Photosynthesis
+                        </Button>
+                        <Button
+                          onClick={() => explainConcept("Gravity")}
+                          className="bg-indigo-600 hover:bg-indigo-700 text-xs"
+                          disabled={isLoading}
+                        >
+                          Gravity
+                        </Button>
+                      </div>
+                      {aiFeatures.conceptExplanation && (
+                        <div className="bg-white p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
+                          <pre className="whitespace-pre-wrap text-xs">{aiFeatures.conceptExplanation}</pre>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gradient-to-br from-orange-50 to-red-100 border-0 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-orange-800">
+                      <TrendingUp className="w-5 h-5" />
+                      Learning Insights
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <Button
+                        onClick={generateInsights}
+                        className="bg-orange-600 hover:bg-orange-700 text-sm w-full"
+                        disabled={isLoading}
+                      >
+                        Generate AI Insights
+                      </Button>
+                      {aiFeatures.learningInsights && (
+                        <div className="bg-white p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
+                          <pre className="whitespace-pre-wrap text-xs">{aiFeatures.learningInsights}</pre>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
               <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-gray-800">
@@ -1007,6 +1455,142 @@ export default function TechShikshaApp() {
             </TabsContent>
 
             <TabsContent value="students" className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6 mb-6">
+                <Card className="bg-gradient-to-br from-blue-50 to-indigo-100 border-0 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-blue-800">
+                      <Brain className="w-5 h-5" />
+                      AI Student Analysis
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="grid grid-cols-2 gap-2">
+                        <Button
+                          onClick={() => generateStudentAnalysis("Harshvardhan")}
+                          className="bg-blue-600 hover:bg-blue-700 text-xs"
+                          disabled={isLoading}
+                        >
+                          Analyze Harsh
+                        </Button>
+                        <Button
+                          onClick={() => generateStudentAnalysis("Himanshu")}
+                          className="bg-indigo-600 hover:bg-indigo-700 text-xs"
+                          disabled={isLoading}
+                        >
+                          Analyze Himanshu
+                        </Button>
+                        <Button
+                          onClick={() => generateStudentAnalysis("Jagriti")}
+                          className="bg-purple-600 hover:bg-purple-700 text-xs"
+                          disabled={isLoading}
+                        >
+                          Analyze Jagriti
+                        </Button>
+                        <Button
+                          onClick={() => generateStudentAnalysis("Mahi")}
+                          className="bg-pink-600 hover:bg-pink-700 text-xs"
+                          disabled={isLoading}
+                        >
+                          Analyze Mahi
+                        </Button>
+                      </div>
+                      {teacherAiFeatures.studentAnalysis && (
+                        <div className="bg-white p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
+                          <pre className="whitespace-pre-wrap text-xs">{teacherAiFeatures.studentAnalysis}</pre>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gradient-to-br from-green-50 to-emerald-100 border-0 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-green-800">
+                      <Lightbulb className="w-5 h-5" />
+                      AI Curriculum Suggestions
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={() => generateCurriculumSuggestions("Mathematics")}
+                          className="bg-green-600 hover:bg-green-700 text-xs"
+                          disabled={isLoading}
+                        >
+                          Math Curriculum
+                        </Button>
+                        <Button
+                          onClick={() => generateCurriculumSuggestions("Science")}
+                          className="bg-teal-600 hover:bg-teal-700 text-xs"
+                          disabled={isLoading}
+                        >
+                          Science Curriculum
+                        </Button>
+                      </div>
+                      {teacherAiFeatures.curriculumSuggestions && (
+                        <div className="bg-white p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
+                          <pre className="whitespace-pre-wrap text-xs">{teacherAiFeatures.curriculumSuggestions}</pre>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <Card className="bg-gradient-to-br from-purple-50 to-violet-100 border-0 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-purple-800">
+                      <TrendingUp className="w-5 h-5" />
+                      Performance Prediction
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <Button
+                        onClick={generatePerformancePrediction}
+                        className="bg-purple-600 hover:bg-purple-700 text-sm w-full"
+                        disabled={isLoading}
+                      >
+                        Generate AI Predictions
+                      </Button>
+                      {teacherAiFeatures.performancePrediction && (
+                        <div className="bg-white p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
+                          <pre className="whitespace-pre-wrap text-xs">{teacherAiFeatures.performancePrediction}</pre>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gradient-to-br from-orange-50 to-red-100 border-0 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-orange-800">
+                      <Award className="w-5 h-5" />
+                      AI Grading Insights
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <Button
+                        onClick={generateGradingInsights}
+                        className="bg-orange-600 hover:bg-orange-700 text-sm w-full"
+                        disabled={isLoading}
+                      >
+                        Get Grading Insights
+                      </Button>
+                      {teacherAiFeatures.gradingInsights && (
+                        <div className="bg-white p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
+                          <pre className="whitespace-pre-wrap text-xs">{teacherAiFeatures.gradingInsights}</pre>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
               <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
                 <CardHeader>
                   <CardTitle className="text-gray-800">Student Progress Tracking</CardTitle>
@@ -1051,68 +1635,199 @@ export default function TechShikshaApp() {
             </TabsContent>
 
             <TabsContent value="analytics" className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+              <div className="grid md:grid-cols-2 gap-6 mb-6">
+                <Card className="bg-gradient-to-br from-blue-50 to-cyan-100 border-0 shadow-lg">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-gray-800">
-                      <TrendingUp className="w-5 h-5 text-green-600" />
-                      Performance Trends
+                    <CardTitle className="flex items-center gap-2 text-blue-800">
+                      <Brain className="w-5 h-5" />
+                      AI System Analytics
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <ResponsiveContainer width="100%" height={300}>
-                      <LineChart data={studentProgressData}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#e0e7ff" />
-                        <XAxis dataKey="week" stroke="#6b7280" />
-                        <YAxis stroke="#6b7280" />
-                        <Tooltip
-                          contentStyle={{
-                            backgroundColor: "white",
-                            border: "1px solid #e5e7eb",
-                            borderRadius: "8px",
-                            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                          }}
-                        />
-                        <Legend />
-                        <Line type="monotone" dataKey="mathematics" stroke="#3b82f6" strokeWidth={3} />
-                        <Line type="monotone" dataKey="science" stroke="#10b981" strokeWidth={3} />
-                        <Line type="monotone" dataKey="english" stroke="#f59e0b" strokeWidth={3} />
-                        <Line type="monotone" dataKey="hindi" stroke="#ef4444" strokeWidth={3} />
-                      </LineChart>
-                    </ResponsiveContainer>
+                    <div className="space-y-3">
+                      <Button
+                        onClick={generateSystemAnalytics}
+                        className="bg-blue-600 hover:bg-blue-700 text-sm w-full"
+                        disabled={isLoading}
+                      >
+                        Generate System Report
+                      </Button>
+                      {adminAiFeatures.systemAnalytics && (
+                        <div className="bg-white p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
+                          <pre className="whitespace-pre-wrap text-xs">{adminAiFeatures.systemAnalytics}</pre>
+                        </div>
+                      )}
+                    </div>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+                <Card className="bg-gradient-to-br from-green-50 to-emerald-100 border-0 shadow-lg">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-gray-800">
-                      <Target className="w-5 h-5 text-blue-600" />
-                      Subject Distribution
+                    <CardTitle className="flex items-center gap-2 text-green-800">
+                      <Settings className="w-5 h-5" />
+                      Resource Optimization
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <ResponsiveContainer width="100%" height={300}>
-                      <PieChart>
-                        <Pie
-                          data={subjectDistribution}
-                          cx="50%"
-                          cy="50%"
-                          labelLine={false}
-                          label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                          outerRadius={80}
-                          fill="#8884d8"
-                          dataKey="value"
-                        >
-                          {subjectDistribution.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                          ))}
-                        </Pie>
-                        <Tooltip />
-                      </PieChart>
-                    </ResponsiveContainer>
+                    <div className="space-y-3">
+                      <Button
+                        onClick={generateResourceOptimization}
+                        className="bg-green-600 hover:bg-green-700 text-sm w-full"
+                        disabled={isLoading}
+                      >
+                        Optimize Resources
+                      </Button>
+                      {adminAiFeatures.resourceOptimization && (
+                        <div className="bg-white p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
+                          <pre className="whitespace-pre-wrap text-xs">{adminAiFeatures.resourceOptimization}</pre>
+                        </div>
+                      )}
+                    </div>
                   </CardContent>
                 </Card>
               </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <Card className="bg-gradient-to-br from-purple-50 to-violet-100 border-0 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-purple-800">
+                      <TrendingUp className="w-5 h-5" />
+                      Performance Forecast
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <Button
+                        onClick={generatePerformanceForecast}
+                        className="bg-purple-600 hover:bg-purple-700 text-sm w-full"
+                        disabled={isLoading}
+                      >
+                        Generate Forecast
+                      </Button>
+                      {adminAiFeatures.performanceForecast && (
+                        <div className="bg-white p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
+                          <pre className="whitespace-pre-wrap text-xs">{adminAiFeatures.performanceForecast}</pre>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gradient-to-br from-orange-50 to-red-100 border-0 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-orange-800">
+                      <Users className="w-5 h-5" />
+                      Engagement Insights
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <Button
+                        onClick={generateEngagementInsights}
+                        className="bg-orange-600 hover:bg-orange-700 text-sm w-full"
+                        disabled={isLoading}
+                      >
+                        Analyze Engagement
+                      </Button>
+                      {adminAiFeatures.engagementInsights && (
+                        <div className="bg-white p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
+                          <pre className="whitespace-pre-wrap text-xs">{adminAiFeatures.engagementInsights}</pre>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-gray-800">
+                    <BarChart3 className="w-5 h-5 text-purple-600" />
+                    Platform Usage Analytics
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={systemAnalyticsData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e0e7ff" />
+                      <XAxis dataKey="month" stroke="#6b7280" />
+                      <YAxis stroke="#6b7280" />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "white",
+                          border: "1px solid #e5e7eb",
+                          borderRadius: "8px",
+                          boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                        }}
+                      />
+                      <Legend />
+                      <Line
+                        type="monotone"
+                        dataKey="engagement"
+                        stroke="#8b5cf6"
+                        strokeWidth={3}
+                        dot={{ fill: "#8b5cf6", strokeWidth: 2, r: 4 }}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="completion"
+                        stroke="#06b6d4"
+                        strokeWidth={3}
+                        dot={{ fill: "#06b6d4", strokeWidth: 2, r: 4 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-gray-800">
+                    <Target className="w-5 h-5 text-orange-600" />
+                    Performance Metrics
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    <div>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="font-medium text-gray-700">Student Engagement</span>
+                        <span className="text-emerald-600 font-semibold">85%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-3">
+                        <div
+                          className="bg-gradient-to-r from-emerald-500 to-emerald-600 h-3 rounded-full shadow-sm"
+                          style={{ width: "85%" }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="font-medium text-gray-700">Course Completion Rate</span>
+                        <span className="text-blue-600 font-semibold">78%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-3">
+                        <div
+                          className="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full shadow-sm"
+                          style={{ width: "78%" }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="font-medium text-gray-700">AI Assistant Usage</span>
+                        <span className="text-purple-600 font-semibold">92%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-3">
+                        <div
+                          className="bg-gradient-to-r from-purple-500 to-purple-600 h-3 rounded-full shadow-sm"
+                          style={{ width: "92%" }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </div>
@@ -1122,12 +1837,12 @@ export default function TechShikshaApp() {
 
   if (currentUser.role === "admin") {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50">
-        <header className="bg-white/80 backdrop-blur-sm border-b border-orange-200 px-6 py-4 shadow-sm">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-stone-50">
+        <header className="bg-white/80 backdrop-blur-sm border-b border-stone-200 px-6 py-4 shadow-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-xl flex items-center justify-center">
-                <BookOpen className="w-5 h-5 text-white" />
+                <BarChart3 className="w-5 h-5 text-white" />
               </div>
               <div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
@@ -1148,13 +1863,10 @@ export default function TechShikshaApp() {
         </header>
 
         <div className="container mx-auto px-6 py-8">
-          <Tabs defaultValue="dashboard" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4 bg-white/80 backdrop-blur-sm">
-              <TabsTrigger
-                value="dashboard"
-                className="data-[state=active]:bg-emerald-500 data-[state=active]:text-white"
-              >
-                Dashboard
+          <Tabs defaultValue="system" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-3 bg-white/80 backdrop-blur-sm">
+              <TabsTrigger value="system" className="data-[state=active]:bg-emerald-500 data-[state=active]:text-white">
+                System Overview
               </TabsTrigger>
               <TabsTrigger value="users" className="data-[state=active]:bg-emerald-500 data-[state=active]:text-white">
                 User Management
@@ -1163,145 +1875,156 @@ export default function TechShikshaApp() {
                 value="analytics"
                 className="data-[state=active]:bg-emerald-500 data-[state=active]:text-white"
               >
-                System Analytics
-              </TabsTrigger>
-              <TabsTrigger
-                value="reports"
-                className="data-[state=active]:bg-emerald-500 data-[state=active]:text-white"
-              >
-                Reports
+                Analytics
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="dashboard" className="space-y-6">
+            <TabsContent value="system" className="space-y-6">
               <div className="grid md:grid-cols-4 gap-6">
                 <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0 shadow-lg">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium text-blue-100">Total Students</CardTitle>
+                    <CardTitle className="text-sm font-medium text-blue-100">Total Users</CardTitle>
                     <Users className="h-5 w-5 text-blue-200" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-3xl font-bold">{users.students.length}</div>
-                    <p className="text-xs text-blue-200">+2 from last month</p>
+                    <div className="text-3xl font-bold">{users.students.length + 2}</div>
+                    <p className="text-xs text-blue-200">Registered users</p>
                   </CardContent>
                 </Card>
 
                 <Card className="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white border-0 shadow-lg">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium text-emerald-100">Active Teachers</CardTitle>
-                    <BookOpen className="h-5 w-5 text-emerald-200" />
+                    <CardTitle className="text-sm font-medium text-emerald-100">Active Today</CardTitle>
+                    <Clock className="h-5 w-5 text-emerald-200" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-3xl font-bold">1</div>
-                    <p className="text-xs text-emerald-200">Dr. Anurag Shrivastava</p>
+                    <div className="text-3xl font-bold">12</div>
+                    <p className="text-xs text-emerald-200">Users online</p>
                   </CardContent>
                 </Card>
 
                 <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white border-0 shadow-lg">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium text-purple-100">System Uptime</CardTitle>
-                    <BarChart3 className="h-5 w-5 text-purple-200" />
+                    <CardTitle className="text-sm font-medium text-purple-100">Avg. Session</CardTitle>
+                    <Clock className="h-5 w-5 text-purple-200" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-3xl font-bold">99.9%</div>
-                    <p className="text-xs text-purple-200">Last 30 days</p>
+                    <div className="text-3xl font-bold">28m</div>
+                    <p className="text-xs text-purple-200">Per user</p>
                   </CardContent>
                 </Card>
 
                 <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-white border-0 shadow-lg">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium text-orange-100">Avg. Engagement</CardTitle>
-                    <Trophy className="h-5 w-5 text-orange-200" />
+                    <CardTitle className="text-sm font-medium text-orange-100">System Uptime</CardTitle>
+                    <Activity className="h-5 w-5 text-orange-200" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-3xl font-bold">85%</div>
-                    <p className="text-xs text-orange-200">Daily active users</p>
+                    <div className="text-3xl font-bold">99.9%</div>
+                    <p className="text-xs text-orange-200">Last 24 hours</p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6 mb-6">
+                <Card className="bg-gradient-to-br from-blue-50 to-cyan-100 border-0 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-blue-800">
+                      <Brain className="w-5 h-5" />
+                      AI System Analytics
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <Button
+                        onClick={generateSystemAnalytics}
+                        className="bg-blue-600 hover:bg-blue-700 text-sm w-full"
+                        disabled={isLoading}
+                      >
+                        Generate System Report
+                      </Button>
+                      {adminAiFeatures.systemAnalytics && (
+                        <div className="bg-white p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
+                          <pre className="whitespace-pre-wrap text-xs">{adminAiFeatures.systemAnalytics}</pre>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gradient-to-br from-green-50 to-emerald-100 border-0 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-green-800">
+                      <Settings className="w-5 h-5" />
+                      Resource Optimization
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <Button
+                        onClick={generateResourceOptimization}
+                        className="bg-green-600 hover:bg-green-700 text-sm w-full"
+                        disabled={isLoading}
+                      >
+                        Optimize Resources
+                      </Button>
+                      {adminAiFeatures.resourceOptimization && (
+                        <div className="bg-white p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
+                          <pre className="whitespace-pre-wrap text-xs">{adminAiFeatures.resourceOptimization}</pre>
+                        </div>
+                      )}
+                    </div>
                   </CardContent>
                 </Card>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
-                <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+                <Card className="bg-gradient-to-br from-purple-50 to-violet-100 border-0 shadow-lg">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-gray-800">
-                      <TrendingUp className="w-5 h-5 text-blue-600" />
-                      System Growth Analytics
+                    <CardTitle className="flex items-center gap-2 text-purple-800">
+                      <TrendingUp className="w-5 h-5" />
+                      Performance Forecast
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <ResponsiveContainer width="100%" height={300}>
-                      <AreaChart data={systemAnalyticsData}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#e0e7ff" />
-                        <XAxis dataKey="month" stroke="#6b7280" />
-                        <YAxis stroke="#6b7280" />
-                        <Tooltip
-                          contentStyle={{
-                            backgroundColor: "white",
-                            border: "1px solid #e5e7eb",
-                            borderRadius: "8px",
-                            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                          }}
-                        />
-                        <Legend />
-                        <Area
-                          type="monotone"
-                          dataKey="students"
-                          stackId="1"
-                          stroke="#3b82f6"
-                          fill="#3b82f6"
-                          fillOpacity={0.6}
-                        />
-                        <Area
-                          type="monotone"
-                          dataKey="engagement"
-                          stackId="2"
-                          stroke="#10b981"
-                          fill="#10b981"
-                          fillOpacity={0.6}
-                        />
-                        <Area
-                          type="monotone"
-                          dataKey="completion"
-                          stackId="3"
-                          stroke="#f59e0b"
-                          fill="#f59e0b"
-                          fillOpacity={0.6}
-                        />
-                      </AreaChart>
-                    </ResponsiveContainer>
+                    <div className="space-y-3">
+                      <Button
+                        onClick={generatePerformanceForecast}
+                        className="bg-purple-600 hover:bg-purple-700 text-sm w-full"
+                        disabled={isLoading}
+                      >
+                        Generate Forecast
+                      </Button>
+                      {adminAiFeatures.performanceForecast && (
+                        <div className="bg-white p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
+                          <pre className="whitespace-pre-wrap text-xs">{adminAiFeatures.performanceForecast}</pre>
+                        </div>
+                      )}
+                    </div>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+                <Card className="bg-gradient-to-br from-orange-50 to-red-100 border-0 shadow-lg">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-gray-800">
-                      <Activity className="w-5 h-5 text-green-600" />
-                      Recent System Activity
+                    <CardTitle className="flex items-center gap-2 text-orange-800">
+                      <Users className="w-5 h-5" />
+                      Engagement Insights
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-4 p-3 bg-green-50 rounded-lg border border-green-200">
-                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                        <div className="flex-1">
-                          <p className="text-sm font-medium text-green-800">New student registration: Ashwani Singh</p>
-                          <p className="text-xs text-green-600">2 hours ago</p>
+                    <div className="space-y-3">
+                      <Button
+                        onClick={generateEngagementInsights}
+                        className="bg-orange-600 hover:bg-orange-700 text-sm w-full"
+                        disabled={isLoading}
+                      >
+                        Analyze Engagement
+                      </Button>
+                      {adminAiFeatures.engagementInsights && (
+                        <div className="bg-white p-3 rounded-lg text-sm max-h-32 overflow-y-auto">
+                          <pre className="whitespace-pre-wrap text-xs">{adminAiFeatures.engagementInsights}</pre>
                         </div>
-                      </div>
-                      <div className="flex items-center gap-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                        <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                        <div className="flex-1">
-                          <p className="text-sm font-medium text-blue-800">System backup completed successfully</p>
-                          <p className="text-xs text-blue-600">6 hours ago</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-4 p-3 bg-purple-50 rounded-lg border border-purple-200">
-                        <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                        <div className="flex-1">
-                          <p className="text-sm font-medium text-purple-800">Teacher report generated</p>
-                          <p className="text-xs text-purple-600">Yesterday</p>
-                        </div>
-                      </div>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
@@ -1309,91 +2032,119 @@ export default function TechShikshaApp() {
 
               <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-gray-800">Hardware Status</CardTitle>
+                  <CardTitle className="flex items-center gap-2 text-gray-800">
+                    <BarChart3 className="w-5 h-5 text-purple-600" />
+                    Subject Distribution
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-700">Raspberry Pi Server</span>
-                      <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 border-emerald-300">
-                        Online
-                      </Badge>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-700">Database Server</span>
-                      <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 border-emerald-300">
-                        Online
-                      </Badge>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-700">AI Service (Gemini)</span>
-                      <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 border-emerald-300">
-                        Active
-                      </Badge>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-700">Backup System</span>
-                      <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 border-emerald-300">
-                        Healthy
-                      </Badge>
-                    </div>
-                  </div>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        dataKey="value"
+                        isAnimationActive={false}
+                        data={subjectDistribution}
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        label
+                      >
+                        {subjectDistribution.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-gray-800">
+                    <BarChart3 className="w-5 h-5 text-purple-600" />
+                    Platform Usage Analytics
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={systemAnalyticsData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e0e7ff" />
+                      <XAxis dataKey="month" stroke="#6b7280" />
+                      <YAxis stroke="#6b7280" />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "white",
+                          border: "1px solid #e5e7eb",
+                          borderRadius: "8px",
+                          boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                        }}
+                      />
+                      <Legend />
+                      <Line
+                        type="monotone"
+                        dataKey="engagement"
+                        stroke="#8b5cf6"
+                        strokeWidth={3}
+                        dot={{ fill: "#8b5cf6", strokeWidth: 2, r: 4 }}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="completion"
+                        stroke="#06b6d4"
+                        strokeWidth={3}
+                        dot={{ fill: "#06b6d4", strokeWidth: 2, r: 4 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
                 </CardContent>
               </Card>
             </TabsContent>
 
             <TabsContent value="users" className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
-                  <CardHeader>
-                    <CardTitle className="text-gray-800">Students ({users.students.length})</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {users.students.map((student) => (
-                        <div
-                          key={student.id}
-                          className="flex items-center justify-between p-4 border rounded-xl bg-gray-50"
-                        >
-                          <div>
-                            <p className="font-medium text-gray-700">{student.name}</p>
-                            <p className="text-sm text-gray-600">{student.email}</p>
+              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+                <CardHeader>
+                  <CardTitle className="text-gray-800">User Management</CardTitle>
+                  <CardDescription className="text-gray-600">
+                    Manage and monitor user accounts and roles
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {Object.entries(users).map(([role, user]) => (
+                      <div key={role}>
+                        <h3 className="font-semibold text-gray-700 capitalize">{role}</h3>
+                        {Array.isArray(user) ? (
+                          user.map((u) => (
+                            <div
+                              key={u.id}
+                              className="flex items-center justify-between p-4 border rounded-xl bg-gray-50"
+                            >
+                              <div>
+                                <h3 className="font-medium text-gray-700">{u.name}</h3>
+                                <p className="text-sm text-gray-600">{u.email}</p>
+                              </div>
+                              <Badge variant="outline" className="border-emerald-200 text-emerald-700">
+                                Active
+                              </Badge>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="flex items-center justify-between p-4 border rounded-xl bg-gray-50">
+                            <div>
+                              <h3 className="font-medium text-gray-700">{user.name}</h3>
+                              <p className="text-sm text-gray-600">{user.email}</p>
+                            </div>
+                            <Badge variant="outline" className="border-emerald-200 text-emerald-700">
+                              Active
+                            </Badge>
                           </div>
-                          <Badge variant="outline" className="border-emerald-200 text-emerald-700">
-                            Active
-                          </Badge>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
-                  <CardHeader>
-                    <CardTitle className="text-gray-800">Staff</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between p-4 border rounded-xl bg-gray-50">
-                        <div>
-                          <p className="font-medium text-gray-700">{users.teacher.name}</p>
-                          <p className="text-sm text-gray-600">{users.teacher.email}</p>
-                        </div>
-                        <Badge className="bg-emerald-100 text-emerald-800 border-emerald-300">Teacher</Badge>
+                        )}
                       </div>
-                      <div className="flex items-center justify-between p-4 border rounded-xl bg-gray-50">
-                        <div>
-                          <p className="font-medium text-gray-700">{users.admin.name}</p>
-                          <p className="text-sm text-gray-600">{users.admin.email}</p>
-                        </div>
-                        <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 border-emerald-300">
-                          Admin
-                        </Badge>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </TabsContent>
 
             <TabsContent value="analytics" className="space-y-6">
@@ -1489,51 +2240,9 @@ export default function TechShikshaApp() {
                 </Card>
               </div>
             </TabsContent>
-
-            <TabsContent value="reports" className="space-y-6">
-              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-gray-800">Generate Reports</CardTitle>
-                  <CardDescription className="text-gray-600">
-                    Create detailed reports for stakeholders and government partnerships
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <Button className="h-20 flex-col bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700">
-                      <BarChart3 className="w-6 h-6 mb-2" />
-                      Student Progress Report
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="h-20 flex-col bg-transparent border-emerald-200 text-emerald-700 hover:bg-emerald-50"
-                    >
-                      <Users className="w-6 h-6 mb-2" />
-                      Teacher Performance Report
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="h-20 flex-col bg-transparent border-emerald-200 text-emerald-700 hover:bg-emerald-50"
-                    >
-                      <Trophy className="w-6 h-6 mb-2" />
-                      System Usage Analytics
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="h-20 flex-col bg-transparent border-emerald-200 text-emerald-700 hover:bg-emerald-50"
-                    >
-                      <BookOpen className="w-6 h-6 mb-2" />
-                      Curriculum Effectiveness
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
           </Tabs>
         </div>
       </div>
     )
   }
-
-  return null
 }
