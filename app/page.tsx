@@ -1880,6 +1880,86 @@ export default function TechShikshaApp() {
             </TabsList>
 
             <TabsContent value="system" className="space-y-6">
+              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-gray-800">
+                    <Activity className="w-5 h-5 text-emerald-600" />
+                    System Status
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 border rounded-lg bg-gray-50">
+                        <div className="flex items-center gap-3">
+                          <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                          <span className="font-medium text-gray-700">Raspberry Pi Servers</span>
+                        </div>
+                        <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-300">
+                          Online
+                        </Badge>
+                      </div>
+
+                      <div className="flex items-center justify-between p-3 border rounded-lg bg-gray-50">
+                        <div className="flex items-center gap-3">
+                          <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                          <span className="font-medium text-gray-700">Database Connection</span>
+                        </div>
+                        <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-300">
+                          Connected
+                        </Badge>
+                      </div>
+
+                      <div className="flex items-center justify-between p-3 border rounded-lg bg-gray-50">
+                        <div className="flex items-center gap-3">
+                          <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                          <span className="font-medium text-gray-700">AI Chatbot Service</span>
+                        </div>
+                        <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-300">
+                          Active
+                        </Badge>
+                      </div>
+
+                      <div className="flex items-center justify-between p-3 border rounded-lg bg-gray-50">
+                        <div className="flex items-center gap-3">
+                          <div className="w-3 h-3 bg-yellow-500 rounded-full animate-pulse"></div>
+                          <span className="font-medium text-gray-700">SMS Gateway</span>
+                        </div>
+                        <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-300">
+                          Maintenance
+                        </Badge>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold text-gray-800 mb-3">Recent Activities</h3>
+                      <div className="space-y-2 max-h-40 overflow-y-auto">
+                        <div className="flex items-center justify-between p-2 border rounded bg-blue-50">
+                          <span className="text-sm text-gray-700">System backup completed</span>
+                          <span className="text-xs text-gray-500">5 min ago</span>
+                        </div>
+                        <div className="flex items-center justify-between p-2 border rounded bg-green-50">
+                          <span className="text-sm text-gray-700">AI model updated successfully</span>
+                          <span className="text-xs text-gray-500">15 min ago</span>
+                        </div>
+                        <div className="flex items-center justify-between p-2 border rounded bg-purple-50">
+                          <span className="text-sm text-gray-700">New user registration: Ashish</span>
+                          <span className="text-xs text-gray-500">1h ago</span>
+                        </div>
+                        <div className="flex items-center justify-between p-2 border rounded bg-orange-50">
+                          <span className="text-sm text-gray-700">Database optimization completed</span>
+                          <span className="text-xs text-gray-500">2h ago</span>
+                        </div>
+                        <div className="flex items-center justify-between p-2 border rounded bg-red-50">
+                          <span className="text-sm text-gray-700">SMS Gateway maintenance started</span>
+                          <span className="text-xs text-gray-500">3h ago</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
               <div className="grid md:grid-cols-4 gap-6">
                 <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0 shadow-lg">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
