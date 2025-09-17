@@ -14,7 +14,7 @@ Any changes you make to your deployed app will be automatically pushed to this r
 
 Your project is live at:
 
-**[https://vercel.com/harshs-projects-49099e87/v0-learning-app-with-ai](https://vercel.com/harshs-projects-49099e87/v0-learning-app-with-ai)**
+**[https://v0-learning-app-with-ai-rouge.vercel.app/](https://v0-learning-app-with-ai-rouge.vercel.app/)**
 
 ## Build your app
 
